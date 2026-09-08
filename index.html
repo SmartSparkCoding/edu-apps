@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>French Vocab Trainer</title>
+<style>
+    body {
+        margin: 0;
+        background: #fafafa;
+        color: #222;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #progress {
+        height: 6px;
+        background: #e5e5e5;
+        width: 100%;
+    }
+    #progressBar {
+        height: 100%;
+        width: 0%;
+        background: #4a90e2;
+        transition: width 0.2s ease;
+    }
+
+    #container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px;
+    }
+
+    #wordFr {
+        font-size: 64px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    #wordEn {
+        font-size: 24px;
+        color: #666;
+        margin-top: 10px;
+    }
+
+    #controls {
+        margin-top: 40px;
+        display: flex;
+        gap: 12px;
+    }
+
+    button {
+        padding: 12px 22px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background: #fff;
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+    button:hover {
+        background: #f0f0f0;
+    }
+
+    #mode {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #777;
+    }
+</style>
+</head>
+<body>
+
+<div id="progress"><div id="progressBar"></div></div>
+
+<div id="container">
+    <div id="wordFr">Click Start</div>
+    <div id="wordEn"></div>
+
+    <div id="controls">
+        <button id="startBtn">Start Show</button>
+        <button id="prevBtn">Back</button>
+        <button id="nextBtn">Next</button>
+        <button id="reviewBtn">Review</button>
+        <button id="moveOnBtn">Move On</button>
+    </div>
+
+    <div id="mode">Idle</div>
+</div>
+
+<script>
+const WORDS = [
+    { fr: "patient", en: "patient" },
+    { fr: "travailleur", en: "hardworking" },
+    { fr: "égoïste", en: "selfish" },
+    { fr: "méchant", en: "mean / nasty" },
+    { fr: "drôle", en: "funny" },
+    { fr: "paresseux", en: "lazy" },
+    { fr: "heureux", en: "happy" },
+    { fr: "bavarde", en: "talkative" },
+    { fr: "fidèle", en: "loyal / faithful" },
+    { fr: "généreux", en: "generous" },
+    { fr: "gentil", en: "kind / nice" },
+    { fr: "digne de confiance", en: "trustworthy" },
+    { fr: "ouvert d'esprit", en: "open-minded" },
+    { fr: "modeste", en: "modest" },
+    { fr: "sportif", en: "sporty / athletic" },
+    { fr: "belle", en: "beautiful (feminine)" },
+    { fr: "beau", en: "handsome / beautiful (masculine)" },
+    { fr: "rigolo", en: "funny / amusing" },
+    { fr: "honnête", en: "honest" },
+    { fr: "positif", en: "positive" },
+    { fr: "affectueux", en: "affectionate" },
+    { fr: "timide", en: "shy" }
+];
+
+const STORAGE_KEY = "french_order";
+
+let order = [];
+let index = 0;
+let mode = "idle";
+
+const frEl = document.getElementById("wordFr");
+const enEl = document.getElementById("wordEn");
+const modeEl = document.getElementById("mode");
+const progressBar = document.getElementById("progressBar");
+
+let frenchVoice = null;
+
+// FORCE a French voice
+function loadVoices() {
+    const voices = speechSynthesis.getVoices();
+    frenchVoice = voices.find(v =>
+        v.lang.toLowerCase().includes("fr")
+    );
+
+    // If no French voice yet, retry shortly
+    if (!frenchVoice) {
+        setTimeout(loadVoices, 200);
+    }
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function speak(text) {
+    if (!frenchVoice) {
+        loadVoices();
+    }
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.voice = frenchVoice;
+    utter.lang = "fr-FR";
+    utter.rate = 0.95;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+}
+
+function shuffle() {
+    return WORDS.map((_, i) => i).sort(() => Math.random() - 0.5);
+}
+
+function saveSession() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+}
+
+function loadSession() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    try {
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) && arr.length === WORDS.length ? arr : null;
+    } catch {
+        return null;
+    }
+}
+
+function clearSession() {
+    localStorage.removeItem(STORAGE_KEY);
+}
+
+function updateProgress() {
+    const pct = ((index + 1) / WORDS.length) * 100;
+    progressBar.style.width = pct + "%";
+}
+
+function render() {
+    if (mode === "idle") {
+        frEl.textContent = "Click Start";
+        enEl.textContent = "";
+        progressBar.style.width = "0%";
+        modeEl.textContent = "Idle";
+        return;
+    }
+
+    const idx = order[index];
+    const w = WORDS[idx];
+
+    if (mode === "test") {
+        frEl.textContent = w.fr;
+        enEl.textContent = "";
+        speak(w.fr);
+    } else if (mode === "review") {
+        frEl.textContent = w.fr;
+        enEl.textContent = w.en;
+        speak(w.fr);
+    }
+
+    modeEl.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    updateProgress();
+}
+
+function startTest() {
+    order = shuffle();
+    index = 0;
+    mode = "test";
+    saveSession();
+    render();
+}
+
+function startReview() {
+    const stored = loadSession();
+    if (!stored) return;
+    order = stored;
+    index = 0;
+    mode = "review";
+    render();
+}
+
+document.getElementById("startBtn").onclick = startTest;
+
+document.getElementById("nextBtn").onclick = () => {
+    if (mode === "idle") return;
+    if (index < WORDS.length - 1) index++;
+    render();
+};
+
+document.getElementById("prevBtn").onclick = () => {
+    if (mode === "idle") return;
+    if (index > 0) index--;
+    render();
+};
+
+document.getElementById("reviewBtn").onclick = () => {
+    if (loadSession()) startReview();
+};
+
+document.getElementById("moveOnBtn").onclick = () => {
+    clearSession();
+    mode = "idle";
+    index = 0;
+    render();
+};
+
+document.addEventListener("keydown", e => {
+    if (mode === "idle") return;
+
+    if (e.code === "Space" || e.code === "ArrowRight") {
+        e.preventDefault();
+        if (index < WORDS.length - 1) index++;
+        render();
+    }
+    if (e.code === "ArrowLeft") {
+        if (index > 0) index--;
+        render();
+    }
+});
+
+const stored = loadSession();
+if (stored) {
+    order = stored;
+    mode = "idle";
+}
+render();
+</script>
+
+</body>
+</html>
