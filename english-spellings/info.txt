@@ -1,3 +1,4 @@
 title: English Spellings App
 description: A very simple spellings app that reads them out to you. 
+image: Screenshot 2026-09-08 at 18.46.31.png
 date: 2026-09-08
