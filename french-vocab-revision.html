@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#176b58">
+  <meta name="description" content="French key vocabulary revision: Mes amis, c’est ma vie! A two-way listening and recall test with 44 vocabulary items.">
+  <meta name="author" content="Jacob Navaratne">
+  <title>French Vocab Revision · Mes amis, c’est ma vie!</title>
+  <style>
+    :root {
+      --bg: #f7faf8;
+      --surface: #ffffff;
+      --surface-soft: #f1f7f4;
+      --text: #10231d;
+      --muted: #66756f;
+      --muted-2: #87938e;
+      --border: #e1ebe6;
+      --green: #176b58;
+      --green-dark: #0f5143;
+      --green-soft: #e8f3ef;
+      --green-border: #d2e5dd;
+      --danger: #a65353;
+      --shadow: 0 12px 38px rgba(16, 35, 29, 0.07);
+      --shadow-hover: 0 18px 48px rgba(16, 35, 29, 0.11);
+      --radius: 20px;
+      --radius-sm: 12px;
+      --container: 1040px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, select { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(var(--container), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 62px 0 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 17px;
+      padding: 7px 11px;
+      border: 1px solid var(--green-border);
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 780;
+    }
+
+    .intro {
+      max-width: 720px;
+      margin: 19px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    main { padding-bottom: 64px; }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .status-line {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .button,
+    .select {
+      min-height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 0 rgba(16,35,29,.02);
+    }
+
+    .button {
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 720;
+      transition: .18s ease;
+    }
+
+    .button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      border-color: #c6dbd3;
+      box-shadow: 0 8px 18px rgba(16,35,29,.06);
+    }
+
+    .button:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+
+    .button.primary {
+      border-color: var(--green);
+      background: var(--green);
+      color: white;
+      box-shadow: 0 8px 18px rgba(23,107,88,.18);
+    }
+
+    .button.primary:hover:not(:disabled) {
+      border-color: var(--green-dark);
+      background: var(--green-dark);
+    }
+
+    .button.ghost-green {
+      border-color: var(--green-border);
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+
+    .button.icon {
+      width: 44px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    .settings {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .select {
+      min-height: 38px;
+      padding: 7px 34px 7px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .select:focus-visible,
+    .button:focus-visible {
+      outline: 3px solid rgba(23,107,88,.18);
+      outline-offset: 2px;
+    }
+
+    .progress-shell {
+      height: 8px;
+      margin-bottom: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7eee9;
+    }
+
+    .progress {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--green);
+      transition: width .25s ease;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .test-panel {
+      min-height: 505px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .test-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .direction {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .direction strong { color: var(--green-dark); }
+
+    .counter {
+      color: var(--muted-2);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .test-body {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 48px 28px 42px;
+      text-align: center;
+    }
+
+    .welcome,
+    .complete {
+      width: min(700px, 100%);
+    }
+
+    .welcome h2,
+    .complete h2 {
+      margin: 0;
+      font-size: clamp(31px, 5vw, 48px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .welcome p,
+    .complete p {
+      max-width: 600px;
+      margin: 16px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .welcome .button,
+    .complete .button {
+      margin-top: 24px;
+    }
+
+    .prompt-label {
+      margin: 0 0 16px;
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 760;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .prompt {
+      margin: 0;
+      font-size: clamp(38px, 7vw, 76px);
+      line-height: 1.04;
+      letter-spacing: -.052em;
+      font-weight: 780;
+      overflow-wrap: anywhere;
+    }
+
+    .prompt-action {
+      margin-top: 27px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .test-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .hint {
+      color: var(--muted-2);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .review-panel {
+      margin-top: 24px;
+      overflow: hidden;
+    }
+
+    .review-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px 24px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .review-header h2 {
+      margin: 0;
+      font-size: 27px;
+      letter-spacing: -.035em;
+    }
+
+    .review-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .review-list {
+      padding: 6px 20px 20px;
+    }
+
+    .review-row {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 4px;
+      border-bottom: 1px solid #edf2ef;
+    }
+
+    .review-row:last-child { border-bottom: 0; }
+
+    .review-number {
+      color: var(--muted-2);
+      font-size: 12px;
+      font-weight: 760;
+      text-align: right;
+    }
+
+    .review-prompt,
+    .review-answer {
+      min-width: 0;
+    }
+
+    .review-prompt small,
+    .review-answer small {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted-2);
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+    }
+
+    .review-main {
+      font-size: 17px;
+      font-weight: 720;
+      overflow-wrap: anywhere;
+    }
+
+    .review-answer .review-main { color: var(--green-dark); }
+
+    .direction-pill {
+      justify-self: end;
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: var(--surface-soft);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    .review-empty {
+      padding: 28px 20px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer {
+      padding: 26px 0 40px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer a { color: var(--green); font-weight: 700; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 720px) {
+      .container { width: min(100% - 28px, var(--container)); }
+      header { padding-top: 46px; }
+      .toolbar,
+      .test-footer,
+      .review-header { align-items: flex-start; flex-direction: column; }
+      .toolbar-actions { justify-content: flex-start; }
+      .test-top { align-items: flex-start; flex-direction: column; }
+      .test-footer .footer-actions { width: 100%; }
+      .test-footer .footer-actions .button { flex: 1; }
+      .review-row { grid-template-columns: 28px minmax(0,1fr); }
+      .review-answer { grid-column: 2; }
+      .direction-pill { grid-column: 2; justify-self: start; }
+    }
+
+    @media (max-width: 480px) {
+      .settings { align-items: stretch; flex-direction: column; }
+      .setting { justify-content: space-between; }
+      .setting .select { min-width: 160px; }
+      .test-body { min-height: 370px; padding: 40px 18px; }
+      .test-top { padding: 16px 18px; }
+      .test-footer { padding: 15px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="eyebrow">French revision</div>
+      <h1>Mes amis, c’est ma vie!</h1>
+      <p class="intro">Revision Vocabulary List · 18th Sept. Test yourself on every word in both directions, with speech matched to the language on screen.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="toolbar">
+        <div class="status-line" id="statusLine">44 words · 88 prompts</div>
+        <div class="toolbar-actions">
+          <button class="button" id="newRoundButton" type="button">New round</button>
+          <button class="button" id="reviewButton" type="button" disabled>Review</button>
+        </div>
+      </div>
+
+      <section class="settings" aria-label="Test settings">
+        <label class="setting">Speech
+          <select class="select" id="speechMode">
+            <option value="auto">Auto-speak prompts</option>
+            <option value="manual">Manual speech</option>
+            <option value="off">No speech</option>
+          </select>
+        </label>
+        <label class="setting">Speed
+          <select class="select" id="speechRate">
+            <option value="0.8">0.8×</option>
+            <option value="0.9" selected>0.9×</option>
+            <option value="1">1.0×</option>
+            <option value="1.1">1.1×</option>
+          </select>
+        </label>
+      </section>
+
+      <div class="progress-shell" aria-hidden="true">
+        <div class="progress" id="progress"></div>
+      </div>
+
+      <section class="panel test-panel" aria-live="polite">
+        <div class="test-top">
+          <div class="direction" id="direction"><strong>French</strong> → English</div>
+          <div class="counter" id="counter">Ready</div>
+        </div>
+
+        <div class="test-body" id="testBody">
+          <div class="welcome">
+            <p class="prompt-label">44 words · 88 prompts</p>
+            <h2>Ready to test yourself?</h2>
+            <p>Every vocabulary item will appear once in French and once in English. The order is shuffled, and your exact test order is saved for review at the end.</p>
+            <button class="button primary" id="startButton" type="button">Start test</button>
+          </div>
+        </div>
+
+        <div class="test-footer">
+          <div class="hint" id="hint">Press Enter to start. During the test, press Enter for the next word.</div>
+          <div class="footer-actions">
+            <button class="button icon" id="speakButton" type="button" aria-label="Speak prompt" title="Speak prompt" disabled>◉</button>
+            <button class="button primary" id="nextButton" type="button" disabled>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel review-panel" id="reviewPanel" hidden>
+        <div class="review-header">
+          <div>
+            <h2>Your review</h2>
+            <p id="reviewSummary">Complete the full test to see your saved order.</p>
+          </div>
+          <button class="button" id="reviewTopButton" type="button">Back to test</button>
+        </div>
+        <div class="review-list" id="reviewList">
+          <div class="review-empty">Your completed test will appear here.</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      French revision app · Built for <a href="https://edu.navaratne.uk/" target="_blank" rel="noopener">edu.navaratne.uk</a> · <a href="https://jacob.navaratne.uk/" target="_blank" rel="noopener">Jacob Navaratne</a>
+    </div>
+  </footer>
+
+  <script>
+    const VOCAB = [
+      { category: "Time & Frequency", fr: "à l'heure", en: "on time" },
+      { category: "Time & Frequency", fr: "d'abord", en: "firstly, first of all" },
+      { category: "Time & Frequency", fr: "longtemps", en: "a long time" },
+      { category: "Time & Frequency", fr: "gagner du temps", en: "to save time" },
+      { category: "Time & Frequency", fr: "la journée", en: "day" },
+
+      { category: "Verbs", fr: "appeler", en: "to call" },
+      { category: "Verbs", fr: "arrêter", en: "to stop" },
+      { category: "Verbs", fr: "croire", en: "to believe" },
+      { category: "Verbs", fr: "encourager", en: "to encourage" },
+      { category: "Verbs", fr: "manquer", en: "to miss, lack" },
+      { category: "Verbs", fr: "mentir", en: "to lie" },
+      { category: "Verbs", fr: "préparer", en: "to prepare" },
+      { category: "Verbs", fr: "tenir", en: "to hold" },
+      { category: "Verbs", fr: "voir", en: "to see" },
+
+      { category: "Places", fr: "la boulangerie", en: "bakery" },
+      { category: "Places", fr: "le bus", en: "bus" },
+      { category: "Places", fr: "la montagne", en: "mountain" },
+      { category: "Places", fr: "le pique-nique", en: "picnic" },
+      { category: "Places", fr: "le supermarché", en: "supermarket" },
+
+      { category: "Food & Drink", fr: "la boisson", en: "drink" },
+      { category: "Food & Drink", fr: "le dîner", en: "dinner" },
+      { category: "Food & Drink", fr: "la cuisine", en: "cooking, kitchen" },
+
+      { category: "School & Activities", fr: "la gymnastique", en: "gymnastics" },
+      { category: "School & Activities", fr: "la conversation", en: "conversation" },
+
+      { category: "Feelings & Personal Qualities", fr: "la confiance", en: "trust, confidence" },
+      { category: "Feelings & Personal Qualities", fr: "patient(e)", en: "patient" },
+      { category: "Feelings & Personal Qualities", fr: "sensible", en: "sensitive" },
+      { category: "Feelings & Personal Qualities", fr: "seul(e)", en: "alone" },
+      { category: "Feelings & Personal Qualities", fr: "cool", en: "cool" },
+
+      { category: "Useful Nouns", fr: "la couverture", en: "blanket, cover" },
+      { category: "Useful Nouns", fr: "la décision", en: "decision" },
+      { category: "Useful Nouns", fr: "l'idée (f.)", en: "idea" },
+      { category: "Useful Nouns", fr: "le numéro", en: "number" },
+      { category: "Useful Nouns", fr: "la promesse", en: "promise" },
+      { category: "Useful Nouns", fr: "rendez-vous", en: "meeting, appointment" },
+      { category: "Useful Nouns", fr: "le retour", en: "return" },
+
+      { category: "Useful Phrases", fr: "entre", en: "between" },
+      { category: "Useful Phrases", fr: "il faut", en: "it is necessary to, must" },
+      { category: "Useful Phrases", fr: "il vaut la peine de", en: "it is worth" },
+      { category: "Useful Phrases", fr: "il vaut mieux", en: "it is better to" },
+      { category: "Useful Phrases", fr: "juste", en: "fair, just, only" },
+      { category: "Useful Phrases", fr: "la plupart (de)", en: "most (of)" },
+      { category: "Useful Phrases", fr: "proche", en: "close" },
+      { category: "Useful Phrases", fr: "quoi", en: "what" }
+    ];
+
+    const TOTAL_PROMPTS = VOCAB.length * 2;
+
+    const elements = {
+      statusLine: document.getElementById("statusLine"),
+      newRoundButton: document.getElementById("newRoundButton"),
+      reviewButton: document.getElementById("reviewButton"),
+      speechMode: document.getElementById("speechMode"),
+      speechRate: document.getElementById("speechRate"),
+      progress: document.getElementById("progress"),
+      direction: document.getElementById("direction"),
+      counter: document.getElementById("counter"),
+      testBody: document.getElementById("testBody"),
+      hint: document.getElementById("hint"),
+      speakButton: document.getElementById("speakButton"),
+      nextButton: document.getElementById("nextButton"),
+      startButton: document.getElementById("startButton"),
+      reviewPanel: document.getElementById("reviewPanel"),
+      reviewList: document.getElementById("reviewList"),
+      reviewSummary: document.getElementById("reviewSummary"),
+      reviewTopButton: document.getElementById("reviewTopButton")
+    };
+
+    let prompts = [];
+    let currentIndex = -1;
+    let completedRound = [];
+    let testStarted = false;
+    let testComplete = false;
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function buildPromptSet() {
+      const twoWay = [];
+      VOCAB.forEach((item, index) => {
+        twoWay.push({
+          vocabIndex: index,
+          direction: "fr-en",
+          prompt: item.fr,
+          answer: item.en,
+          promptLanguage: "fr-FR",
+          promptLabel: "French",
+          answerLabel: "English",
+          category: item.category
+        });
+        twoWay.push({
+          vocabIndex: index,
+          direction: "en-fr",
+          prompt: item.en,
+          answer: item.fr,
+          promptLanguage: "en-GB",
+          promptLabel: "English",
+          answerLabel: "French",
+          category: item.category
+        });
+      });
+      return shuffle(twoWay);
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function setText(element, text) {
+      element.textContent = text;
+    }
+
+    function speakPrompt() {
+      const item = prompts[currentIndex];
+      if (!item || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(item.prompt);
+      utterance.lang = item.promptLanguage;
+      utterance.rate = Number(elements.speechRate.value);
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const exact = voices.find(voice => voice.lang.toLowerCase() === item.promptLanguage.toLowerCase());
+      const prefix = item.promptLanguage.slice(0, 2).toLowerCase();
+      const regional = voices.find(voice => voice.lang.toLowerCase().startsWith(prefix));
+      if (exact) utterance.voice = exact;
+      else if (regional) utterance.voice = regional;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function updateProgress() {
+      const completed = Math.max(0, currentIndex + 1);
+      const percent = Math.min(100, (completed / TOTAL_PROMPTS) * 100);
+      elements.progress.style.width = `${percent}%`;
+    }
+
+    function renderWelcome() {
+      elements.direction.innerHTML = "<strong>French</strong> → English";
+      elements.counter.textContent = "Ready";
+      elements.testBody.innerHTML = `
+        <div class="welcome">
+          <p class="prompt-label">44 words · 88 prompts</p>
+          <h2>Ready to test yourself?</h2>
+          <p>Every vocabulary item will appear once in French and once in English. The order is shuffled, and your exact test order is saved for review at the end.</p>
+          <button class="button primary" id="startButton" type="button">Start test</button>
+        </div>
+      `;
+      elements.startButton = document.getElementById("startButton");
+      elements.startButton.addEventListener("click", startTest);
+      elements.hint.textContent = "Press Enter to start. During the test, press Enter for the next word.";
+      elements.speakButton.disabled = true;
+      elements.nextButton.disabled = true;
+      elements.progress.style.width = "0%";
+    }
+
+    function startTest() {
+      window.speechSynthesis?.cancel();
+      prompts = buildPromptSet();
+      completedRound = [];
+      currentIndex = 0;
+      testStarted = true;
+      testComplete = false;
+      elements.reviewButton.disabled = true;
+      elements.reviewPanel.hidden = true;
+      elements.statusLine.textContent = `44 words · ${TOTAL_PROMPTS} prompts`;
+      renderPrompt();
+    }
+
+    function renderPrompt() {
+      const item = prompts[currentIndex];
+      const position = currentIndex + 1;
+      const directionArrow = item.direction === "fr-en" ? "→" : "→";
+
+      elements.direction.innerHTML = `<strong>${escapeHTML(item.promptLabel)}</strong> ${directionArrow} ${escapeHTML(item.answerLabel)}`;
+      elements.counter.textContent = `${position} of ${TOTAL_PROMPTS}`;
+      elements.testBody.innerHTML = `
+        <div>
+          <p class="prompt-label">${escapeHTML(item.category)}</p>
+          <h2 class="prompt">${escapeHTML(item.prompt)}</h2>
+          <div class="prompt-action">
+            <button class="button ghost-green" id="speakInline" type="button">Speak again</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("speakInline").addEventListener("click", speakPrompt);
+      elements.hint.textContent = item.direction === "fr-en"
+        ? "Say or think of the English meaning, then reveal it in your review."
+        : "Say or think of the French word, then reveal it in your review.";
+      elements.speakButton.disabled = !("speechSynthesis" in window);
+      elements.nextButton.disabled = false;
+      elements.nextButton.textContent = position === TOTAL_PROMPTS ? "Finish" : "Next";
+      updateProgress();
+
+      if (elements.speechMode.value === "auto") {
+        window.setTimeout(speakPrompt, 120);
+      }
+    }
+
+    function advance() {
+      if (!testStarted || testComplete) return;
+      const item = prompts[currentIndex];
+      completedRound.push({
+        ...item,
+        number: completedRound.length + 1
+      });
+
+      window.speechSynthesis?.cancel();
+
+      if (currentIndex >= prompts.length - 1) {
+        finishTest();
+        return;
+      }
+
+      currentIndex += 1;
+      renderPrompt();
+    }
+
+    function finishTest() {
+      testComplete = true;
+      testStarted = false;
+      elements.counter.textContent = "Complete";
+      elements.statusLine.textContent = "Test complete · 88 / 88 prompts";
+      elements.progress.style.width = "100%";
+      elements.nextButton.disabled = true;
+      elements.speakButton.disabled = true;
+      elements.reviewButton.disabled = false;
+      elements.direction.innerHTML = "<strong>Done</strong> · both directions completed";
+      elements.hint.textContent = "Your exact shuffled order has been saved on this page.";
+      elements.testBody.innerHTML = `
+        <div class="complete">
+          <p class="prompt-label">Finished</p>
+          <h2>That’s the full set.</h2>
+          <p>You completed all 44 words in both French → English and English → French. Review your saved order to check every answer.</p>
+          <button class="button primary" id="openReviewInline" type="button">Review answers</button>
+        </div>
+      `;
+      document.getElementById("openReviewInline").addEventListener("click", openReview);
+      renderReview();
+    }
+
+    function renderReview() {
+      elements.reviewSummary.textContent = `${completedRound.length} prompts · exact shuffled order from your completed test`;
+      elements.reviewList.innerHTML = completedRound.map((item, index) => `
+        <article class="review-row">
+          <div class="review-number">${index + 1}</div>
+          <div class="review-prompt">
+            <small>${escapeHTML(item.promptLabel)} prompt</small>
+            <div class="review-main">${escapeHTML(item.prompt)}</div>
+          </div>
+          <div class="review-answer">
+            <small>${escapeHTML(item.answerLabel)} answer</small>
+            <div class="review-main">${escapeHTML(item.answer)}</div>
+          </div>
+          <div class="direction-pill">${escapeHTML(item.direction === "fr-en" ? "FR → EN" : "EN → FR")}</div>
+        </article>
+      `).join("");
+    }
+
+    function openReview() {
+      if (!completedRound.length) return;
+      renderReview();
+      elements.reviewPanel.hidden = false;
+      elements.reviewPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function closeReview() {
+      elements.reviewPanel.hidden = true;
+      document.querySelector(".test-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function newRound() {
+      renderWelcome();
+      elements.reviewButton.disabled = !completedRound.length;
+      elements.reviewPanel.hidden = true;
+      elements.statusLine.textContent = `44 words · ${TOTAL_PROMPTS} prompts`;
+      testStarted = false;
+      testComplete = false;
+      prompts = [];
+      currentIndex = -1;
+      window.speechSynthesis?.cancel();
+    }
+
+    elements.startButton.addEventListener("click", startTest);
+    elements.nextButton.addEventListener("click", advance);
+    elements.speakButton.addEventListener("click", speakPrompt);
+    elements.newRoundButton.addEventListener("click", newRound);
+    elements.reviewButton.addEventListener("click", openReview);
+    elements.reviewTopButton.addEventListener("click", closeReview);
+
+    elements.speechMode.addEventListener("change", () => {
+      if (elements.speechMode.value !== "auto") window.speechSynthesis?.cancel();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.target && ["INPUT", "SELECT", "TEXTAREA", "BUTTON"].includes(event.target.tagName)) {
+        return;
+      }
+      if (event.key === "Enter") {
+        if (!testStarted && !testComplete) startTest();
+        else if (testStarted) advance();
+      }
+      if (event.key.toLowerCase() === "r" && completedRound.length && !testStarted) openReview();
+      if (event.key === " ") {
+        if (testStarted) {
+          event.preventDefault();
+          speakPrompt();
+        }
+      }
+    });
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.addEventListener("voiceschanged", () => {});
+    }
+
+    renderWelcome();
+  </script>
+</body>
+</html>
