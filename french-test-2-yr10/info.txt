@@ -1,0 +1,3 @@
+title: French Vocab Revision · Mes amis, c’est ma vie!
+description: A two-way French vocabulary revision test covering 44 key words, with randomised French → English and English → French prompts, speech support, and a saved review of the completed test order.
+date: 2026-09-19
